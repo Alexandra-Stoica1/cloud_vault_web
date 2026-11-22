@@ -1,20 +1,14 @@
 import type { ComponentProps } from "react"
 
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
+
+import { FormField } from "./form-field"
 
 type TextFieldProps = Omit<ComponentProps<typeof Input>, "name"> & {
   name: string
   label: string
-  /** Validation message; marks the field as invalid. */
   error?: string
-  /** Help text shown when there is no error. */
   hint?: string
 }
 
@@ -29,29 +23,23 @@ export function TextField({
   className,
   ...inputProps
 }: TextFieldProps) {
-  const messageId = `${id}-message`
-  const message = error ?? hint
-
   return (
-    <Field data-invalid={error ? true : undefined}>
-      <FieldLabel htmlFor={id}>
-        {label}
-        {required && <span className="text-destructive">*</span>}
-      </FieldLabel>
-      <Input
-        id={id}
-        name={name}
-        required={required}
-        aria-invalid={error ? true : undefined}
-        aria-describedby={message ? messageId : undefined}
-        className={cn("h-10 bg-card", className)}
-        {...inputProps}
-      />
-      {error ? (
-        <FieldError id={messageId}>{error}</FieldError>
-      ) : (
-        hint && <FieldDescription id={messageId}>{hint}</FieldDescription>
+    <FormField
+      id={id}
+      label={label}
+      error={error}
+      hint={hint}
+      required={required}
+    >
+      {(control) => (
+        <Input
+          name={name}
+          required={required}
+          className={cn("h-10 bg-card", className)}
+          {...control}
+          {...inputProps}
+        />
       )}
-    </Field>
+    </FormField>
   )
 }
