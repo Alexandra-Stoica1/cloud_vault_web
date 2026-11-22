@@ -11,7 +11,9 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-svh">
       <AppHeader
-        actions={<UserMenu user={{ username: user.username, email: user.email }} />}
+        actions={
+          <UserMenu user={{ username: user.username, email: user.email }} />
+        }
       />
       <main className="mx-auto w-full max-w-[1100px] px-4 py-8 sm:px-6 sm:py-10">
         {children}

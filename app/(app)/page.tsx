@@ -16,7 +16,10 @@ export default async function HomePage() {
   const details = [
     { label: "Plan", value: user.tier },
     { label: "Email", value: user.emailVerified ? "Verified" : "Not verified" },
-    { label: "Member since", value: dateFormat.format(new Date(user.createdAt)) },
+    {
+      label: "Member since",
+      value: dateFormat.format(new Date(user.createdAt)),
+    },
   ]
 
   return (

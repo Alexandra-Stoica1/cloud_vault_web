@@ -36,7 +36,10 @@ export function UserMenu({ user }: { user: Pick<User, "username" | "email"> }) {
         <span className="hidden max-w-40 truncate sm:inline">
           {user.username}
         </span>
-        <ChevronDown aria-hidden="true" className="size-4 text-muted-foreground" />
+        <ChevronDown
+          aria-hidden="true"
+          className="size-4 text-muted-foreground"
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuGroup>
