@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState, useEffect } from "react"
+import { useActionState, useEffect, type ReactNode } from "react"
 
 import { CheckboxField } from "@/components/form/checkbox-field"
 import { FormAlert } from "@/components/form/form-alert"
@@ -21,7 +21,7 @@ type BucketFormProps = {
   /** Called after a successful save, e.g. to close the dialog. */
   onSuccess: () => void
   /** Rendered next to the submit button, e.g. a Cancel button. */
-  secondaryAction?: React.ReactNode
+  secondaryAction?: ReactNode
 }
 
 const initialState: BucketFormState = {}
