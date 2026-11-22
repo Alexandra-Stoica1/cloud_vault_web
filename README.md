@@ -29,6 +29,9 @@ Web front-end for CloudVault, built with Next.js 16, React 19, Tailwind CSS 4 an
 
 Useful scripts: `npm run lint`, `npm run typecheck`, `npm run format`, `npm run build`.
 
+To run the production build so it can be opened from other devices on the network, see
+[docs/deployment.md](docs/deployment.md).
+
 ## Project structure
 
 ```
