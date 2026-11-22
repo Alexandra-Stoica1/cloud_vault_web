@@ -5,11 +5,11 @@ import { useActionState } from "react"
 import { FormAlert } from "@/components/form/form-alert"
 import { SubmitButton } from "@/components/form/submit-button"
 import { TextField } from "@/components/form/text-field"
+import type { FormState } from "@/lib/forms"
 import { NEXT_PARAM } from "@/lib/routes"
 
 import { loginAction } from "../actions"
 import type { LoginField } from "../schemas"
-import type { FormState } from "../types"
 
 const initialState: FormState<LoginField> = {}
 

@@ -17,13 +17,3 @@ export type SessionTokens = {
   /** Access token lifetime in seconds. */
   expiresIn: number
 }
-
-/** State returned by the auth Server Actions to the forms (useActionState). */
-export type FormState<Field extends string> = {
-  /** Message shown above the submit button. */
-  message?: string
-  /** Field name -> validation message. */
-  fieldErrors?: Partial<Record<Field, string>>
-  /** Submitted values, so the form keeps them after an error (passwords excluded). */
-  values?: Partial<Record<Field, string>>
-}
