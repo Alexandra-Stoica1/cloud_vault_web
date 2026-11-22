@@ -4,7 +4,7 @@ import { serverConfig } from "@/lib/config"
 
 import { ApiError, toApiError } from "./errors"
 
-type ApiRequestOptions = {
+export type ApiRequestOptions = {
   method?: "GET" | "POST" | "PUT" | "DELETE"
   /** Sent as JSON. */
   body?: unknown
