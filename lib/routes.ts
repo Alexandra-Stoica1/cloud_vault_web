@@ -2,6 +2,8 @@ export const routes = {
   home: "/",
   login: "/login",
   register: "/register",
+  buckets: "/buckets",
+  bucket: (bucketId: string) => `/buckets/${encodeURIComponent(bucketId)}`,
 } as const
 
 /** Pages for visitors who are not signed in. Signed-in users are sent to the home page. */
