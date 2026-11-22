@@ -3,8 +3,13 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
-import { isApiError } from "@/lib/api/errors"
-import { fieldErrorsFrom, pick, readFormValues } from "@/lib/forms"
+import {
+  apiErrorState,
+  fieldErrorsFrom,
+  pick,
+  readFormValues,
+  type FormState,
+} from "@/lib/forms"
 import { NEXT_PARAM, routes, safeRedirectPath } from "@/lib/routes"
 
 import {
@@ -19,7 +24,7 @@ import {
   readSessionTokens,
   setSessionCookies,
 } from "./server/session-cookies"
-import type { FormState, SessionTokens } from "./types"
+import type { SessionTokens } from "./types"
 
 const LOGIN_FIELDS = ["email", "password"] as const
 const REGISTER_FIELDS = [
@@ -28,19 +33,6 @@ const REGISTER_FIELDS = [
   "password",
   "confirmPassword",
 ] as const
-
-/** Turns an API error into form state; unexpected errors go to the error boundary. */
-function apiErrorState<Field extends string>(
-  error: unknown,
-  values: Partial<Record<Field, string>>
-): FormState<Field> {
-  if (!isApiError(error)) throw error
-  return {
-    message: error.message,
-    fieldErrors: error.fieldErrors as Partial<Record<Field, string>>,
-    values,
-  }
-}
 
 async function startSession(tokens: SessionTokens) {
   setSessionCookies(await cookies(), tokens)

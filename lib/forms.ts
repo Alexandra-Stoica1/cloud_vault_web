@@ -1,5 +1,32 @@
 import type { z } from "zod"
 
+import { isApiError } from "@/lib/api/errors"
+
+/** State returned by a Server Action to its form (useActionState). */
+export type FormState<Field extends string> = {
+  /** True after a successful submit, e.g. to close the dialog holding the form. */
+  success?: boolean
+  /** Message shown above the submit button. */
+  message?: string
+  /** Field name -> validation message. */
+  fieldErrors?: Partial<Record<Field, string>>
+  /** Submitted values, so the form keeps them after an error (passwords excluded). */
+  values?: Partial<Record<Field, string>>
+}
+
+/** Turns an API error into form state; unexpected errors go to the error boundary. */
+export function apiErrorState<Field extends string>(
+  error: unknown,
+  values?: Partial<Record<Field, string>>
+): FormState<Field> {
+  if (!isApiError(error)) throw error
+  return {
+    message: error.message,
+    fieldErrors: error.fieldErrors as Partial<Record<Field, string>>,
+    values,
+  }
+}
+
 /** Reads the given text fields from a submitted form ("" when a field is missing). */
 export function readFormValues<Field extends string>(
   formData: FormData,
