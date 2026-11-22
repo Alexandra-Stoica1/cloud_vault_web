@@ -44,15 +44,16 @@ export function BucketsTable({ buckets, currentUserId }: BucketsTableProps) {
               <TableCell className="px-4 py-3">
                 <Link
                   href={routes.bucket(bucket.id)}
-                  className="flex min-w-48 items-center gap-3 rounded-lg font-medium outline-none hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/50"
+                  className="flex items-center gap-3 rounded-lg font-medium outline-none hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/50 sm:min-w-48"
                 >
                   <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary">
                     <Folder aria-hidden="true" className="size-4" />
                   </span>
-                  <span className="min-w-0">
+                  {/* Narrower on phones so the table fits without scrolling. */}
+                  <span className="max-w-32 min-w-0 sm:max-w-xs">
                     <span className="block truncate">{bucket.name}</span>
                     {bucket.description && (
-                      <span className="block max-w-xs truncate text-xs font-normal text-muted-foreground">
+                      <span className="block truncate text-xs font-normal text-muted-foreground">
                         {bucket.description}
                       </span>
                     )}
