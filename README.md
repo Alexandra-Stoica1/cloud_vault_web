@@ -34,23 +34,33 @@ Useful scripts: `npm run lint`, `npm run typecheck`, `npm run format`, `npm run 
 ```
 app/
   (auth)/           login and register pages (guests only)
-  (app)/            pages for signed-in users, with the shared header
+  (app)/            pages for signed-in users: home, buckets, bucket details
+  error.tsx         error page with a Try again button
 components/
   ui/               shadcn components
-  form/             reusable form pieces: TextField, SubmitButton, FormAlert
-  app/              application shell (header)
+  form/             FormField and the fields built on it (text, textarea, checkbox),
+                    SubmitButton, FormAlert
+  app/              application shell: sidebar, mobile menu, header, navigation links
+  page-header.tsx, empty-state.tsx, detail-grid.tsx, confirm-dialog.tsx, ...
 features/
   auth/
     actions.ts      Server Actions: login, register, logout
     schemas.ts      zod validation, same rules as the API
-    types.ts        User, SessionTokens, FormState
-    server/         server-only code: API calls, cookies, session, refresh
-    ui/             auth components: AuthCard, LoginForm, RegisterForm, UserMenu
+    types.ts        User, SessionTokens
+    server/         server-only code: API calls, cookies, session, refresh,
+                    apiRequestAsUser for protected endpoints
+    ui/             AuthCard, LoginForm, RegisterForm, UserMenu
+  buckets/
+    actions.ts      Server Actions: create, update, delete
+    schemas.ts      zod validation, same rules as the API
+    server/         bucketsApi (/api/buckets) and the page queries
+    ui/             BucketsTable, BucketForm and its dialog, delete dialog, badges
 lib/
   api/              server-side API client and ApiError
   config.ts         server settings from the environment
   routes.ts         route paths and safe redirects
-  forms.ts          form data and validation helpers
+  forms.ts          FormState and form helpers shared by all Server Actions
+  format.ts         size and date formatting
 proxy.ts            session refresh and redirects before every page
 ```
 
@@ -80,3 +90,15 @@ The app follows the backend-for-frontend pattern: the browser never sees the tok
    signed-in users away from `/login` and `/register`. Pages also check the session with
    `requireUser()`. The `next` parameter only accepts paths on this site.
 5. **Logout.** The action revokes the refresh token in the API and deletes both cookies.
+
+## Buckets
+
+- `/buckets` lists the buckets the user owns or is a member of. **New bucket** opens a dialog;
+  the shared flag can only be chosen when creating, as in the API.
+- Each row has a menu with Open, Edit and Delete. Only the owner sees Edit and Delete.
+- `/buckets/<id>` shows the bucket's access, size, owner, members and dates. A bucket that does
+  not exist or is not accessible shows a not-found message.
+- Business rules (duplicate names, the shared bucket limit of the tier, ownership) stay in the
+  API. The forms show its messages, e.g. "The 'free' tier does not allow shared buckets."
+- After a change, the actions call `revalidatePath`, so the list and the details page show the
+  new data without a reload.
