@@ -32,16 +32,18 @@ export async function createBucketAction(
 ): Promise<BucketFormState> {
   const values = readFormValues(formData, TEXT_FIELDS)
   const isShared = isChecked(formData, "isShared")
+  // Sent back after an error so the form keeps the checkbox state too.
+  const kept = { ...values, isShared: isShared ? "on" : "" }
   const parsed = createBucketSchema.safeParse({ ...values, isShared })
   if (!parsed.success) {
-    return { fieldErrors: fieldErrorsFrom(parsed.error), values }
+    return { fieldErrors: fieldErrorsFrom(parsed.error), values: kept }
   }
 
   try {
     await bucketsApi.create(parsed.data)
   } catch (error) {
     // e.g. 409 duplicate name, 400 shared bucket limit of the tier
-    return apiErrorState(error, values)
+    return apiErrorState(error, kept)
   }
   revalidatePath(routes.buckets)
   return { success: true }
